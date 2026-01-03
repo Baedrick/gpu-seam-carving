@@ -30,7 +30,7 @@ possible result. This is often implemented using dynamic programming.
 | ![](images/pietro.jpg) 800x533 | ![](media/pietro_resized.jpg) 400x500 | ![](media/pietro_carved.jpg) 400x500 |
 
 ## Download
-Stable builds can be found on the [releases](https://github.com/Baedrick/seam_carving/releases)
+Stable builds can be found on the [releases](https://github.com/Baedrick/gpu-seam-carving/releases)
 page. This project is currently tested and supported only on Windows.
 
 ## Features
