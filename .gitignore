@@ -6,7 +6,7 @@
 # User-specific files
 *.rsuser
 *.suo
-*.user
+# *.user # Thanks Microsoft
 *.userosscache
 *.sln.docstates
 *.env

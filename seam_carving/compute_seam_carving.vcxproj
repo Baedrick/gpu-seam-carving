@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{d2699ecf-b38c-451c-93f6-715ece11c74b}</ProjectGuid>
+    <RootNamespace>seamcarving</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>seam_carving</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir).tmp\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir).tmp\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\glad\include\;$(SolutionDir)thirdparty\glfw\include\;$(SolutionDir)thirdparty\glm\;$(SolutionDir)thirdparty\imgui\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)thirdparty\glad\include\;$(SolutionDir)thirdparty\glfw\include\;$(SolutionDir)thirdparty\glm\;$(SolutionDir)thirdparty\imgui\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="base\base_arena.cpp" />
+    <ClCompile Include="base\base_strings.cpp" />
+    <ClCompile Include="base\base_thread_context.cpp" />
+    <ClCompile Include="os\os_core.cpp" />
+    <ClCompile Include="os\os_core_win32.cpp" />
+    <ClCompile Include="os\os_gfx_win32.cpp" />
+    <ClCompile Include="os\os_input.cpp" />
+    <ClCompile Include="sc\sc_assets.cpp" />
+    <ClCompile Include="sc\sc_imgui.cpp" />
+    <ClCompile Include="sc\sc_main.cpp" />
+    <ClCompile Include="sc\sc_opengl.cpp" />
+    <ClCompile Include="thirdparty\stb_impl.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\thirdparty\glad\glad.vcxproj">
+      <Project>{1210d960-e318-4db7-bc30-ed4486265da5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\thirdparty\glfw\glfw.vcxproj">
+      <Project>{1bf37984-ec0d-4fa8-8f35-c6ff694f64ec}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\thirdparty\imgui\imgui.vcxproj">
+      <Project>{365a73fc-3c03-436d-b77e-d6a9b6204ddb}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="base\base.hpp" />
+    <ClInclude Include="base\base_arena.hpp" />
+    <ClInclude Include="base\base_assert.h" />
+    <ClInclude Include="base\base_containers.hpp" />
+    <ClInclude Include="base\base_math.hpp" />
+    <ClInclude Include="base\base_strings.hpp" />
+    <ClInclude Include="base\base_thread_context.hpp" />
+    <ClInclude Include="base\base_types.hpp" />
+    <ClInclude Include="base\base_utils.hpp" />
+    <ClInclude Include="os\os.hpp" />
+    <ClInclude Include="os\os_core.hpp" />
+    <ClInclude Include="os\os_core_win32.hpp" />
+    <ClInclude Include="os\os_gfx.hpp" />
+    <ClInclude Include="os\os_gfx_input_codes.hpp" />
+    <ClInclude Include="os\os_gfx_win32.hpp" />
+    <ClInclude Include="os\os_input.hpp" />
+    <ClInclude Include="sc\sc_assets.hpp" />
+    <ClInclude Include="sc\sc_imgui.hpp" />
+    <ClInclude Include="sc\sc_opengl.hpp" />
+    <ClInclude Include="thirdparty\argh.h" />
+    <ClInclude Include="thirdparty\stb_image.h" />
+    <ClInclude Include="thirdparty\stb_image_write.h" />
+    <ClInclude Include="thirdparty\stb_sprintf.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
