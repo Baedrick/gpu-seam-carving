@@ -292,21 +292,21 @@ auto dk::utf8_encode(u8 *out, u32 codepoint) noexcept -> u32 {
 		advance = 1;
 	}
 	else if (codepoint <= 0x7FF) {
-		out[0] = (bitmask<u32>(1) << 6) | ((codepoint >> 6) & bitmask<u32>(4));
-		out[1] = bit<u32>(7) | (codepoint & bitmask<u32>(5));
+		out[0] = static_cast<u8>((bitmask<u32>(1) << 6) | ((codepoint >> 6) & bitmask<u32>(4)));
+		out[1] = static_cast<u8>( bit<u32>(7) | (codepoint & bitmask<u32>(5)));
 		advance = 2;
 	}
 	else if (codepoint <= 0xFFFF) {
-		out[0] = (bitmask<u32>(2) << 5) | ((codepoint >> 12) & bitmask<u32>(3));
-		out[1] = bit<u32>(7) | ((codepoint >> 6) & bitmask<u32>(5));
-		out[2] = bit<u32>(7) | ( codepoint       & bitmask<u32>(5));
+		out[0] = static_cast<u8>((bitmask<u32>(2) << 5) | ((codepoint >> 12) & bitmask<u32>(3)));
+		out[1] = static_cast<u8>( bit<u32>(7) | ((codepoint >> 6) & bitmask<u32>(5)));
+		out[2] = static_cast<u8>( bit<u32>(7) | ( codepoint       & bitmask<u32>(5)));
 		advance = 3;
 	}
 	else if (codepoint <= 0x10FFFF) {
-		out[0] = (bitmask<u32>(3) << 4) | ((codepoint >> 18) & bitmask<u32>(2));
-		out[1] = bit<u32>(7) | ((codepoint >> 12) & bitmask<u32>(5));
-		out[2] = bit<u32>(7) | ((codepoint >>  6) & bitmask<u32>(5));
-		out[3] = bit<u32>(7) | ( codepoint        & bitmask<u32>(5));
+		out[0] = static_cast<u8>((bitmask<u32>(3) << 4) | ((codepoint >> 18) & bitmask<u32>(2)));
+		out[1] = static_cast<u8>( bit<u32>(7) | ((codepoint >> 12) & bitmask<u32>(5)));
+		out[2] = static_cast<u8>( bit<u32>(7) | ((codepoint >>  6) & bitmask<u32>(5)));
+		out[3] = static_cast<u8>( bit<u32>(7) | ( codepoint        & bitmask<u32>(5)));
 		advance = 4;
 	}
 	else {
