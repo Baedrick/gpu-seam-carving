@@ -42,6 +42,18 @@ namespace dk {
 		return x > 0 && (x & (x - 1)) == 0;
 	}
 
+	template <typename T>
+	constexpr auto bitmask(u32 n) noexcept -> T {
+		static_assert(std::is_unsigned_v<T>);
+		return (n >= (sizeof(T) * 8 - 1)) ? static_cast<T>(-1) : (static_cast<T>(1) << (n + 1)) - 1;
+	}
+
+	template <typename T>
+	constexpr auto bit(u32 n) noexcept -> T {
+		static_assert(std::is_unsigned_v<T>);
+		return (n >= (sizeof(T) * 8)) ? static_cast<T>(0) : (static_cast<T>(1) << n);
+	}
+
 	inline auto align_forward_pow_2(std::uintptr_t value, usize align) noexcept -> std::uintptr_t {
 		DK_ASSERT(is_pow_2(align)); // 1, 2, 4, 8, 16, etc.
 		return (value + align - 1) & ~(align - 1);

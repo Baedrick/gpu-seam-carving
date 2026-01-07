@@ -1,4 +1,5 @@
 #include "base_strings.hpp"
+#include "base_utils.hpp"
 
 auto dk::char_is_alpha(u8 c) noexcept -> b8 {
 	return char_is_alpha_upper(c) || char_is_alpha_lower(c);
@@ -216,17 +217,6 @@ namespace {
 	constexpr dk::u8 utf8_class[32] = {
 		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,2,2,2,2,3,3,4,5,
 	};
-
-	// constexpr dk::u32 bitmask1 = 0x01; // 0000 0001
-	constexpr dk::u32 bitmask2 = 0x03; // 0000 0011
-	constexpr dk::u32 bitmask3 = 0x07; // 0000 0111
-	constexpr dk::u32 bitmask4 = 0x0F; // 0000 1111
-	constexpr dk::u32 bitmask5 = 0x1F; // 0001 1111
-	constexpr dk::u32 bitmask6 = 0x3F; // 0011 1111
-	// constexpr dk::u32 bitmask7 = 0x7F; // 0111 1111
-	// constexpr dk::u32 bitmask8 = 0xFF; // 1111 1111
-	// constexpr dk::u32 bitmask9 = 0x01FF; // 0000 0001 1111 1111
-	constexpr dk::u32 bitmask10 = 0x03FF; // 0000 0011 1111 1111
 }
 
 // https://github.com/EpicGamesExt/raddebugger/blob/master/src/base/base_strings.c#L1836
@@ -243,8 +233,8 @@ auto dk::utf8_decode(u8 const *str, u64 max) noexcept -> UnicodeDecode {
 			if(2 <= max) {
 				u8 const cont_byte = str[1];
 				if(utf8_class[cont_byte >> 3] == 0) {
-					result.codepoint = (byte & bitmask5) << 6;
-					result.codepoint |= cont_byte & bitmask6;
+					result.codepoint = (byte & bitmask<u32>(4)) << 6;
+					result.codepoint |= cont_byte & bitmask<u32>(5);
 					result.advance = 2;
 				}
 			}
@@ -255,9 +245,9 @@ auto dk::utf8_decode(u8 const *str, u64 max) noexcept -> UnicodeDecode {
 				u8 const cont_byte[2] = { str[1], str[2] };
 				if (utf8_class[cont_byte[0] >> 3] == 0 &&
 					utf8_class[cont_byte[1] >> 3] == 0) {
-					result.codepoint = (byte & bitmask4) << 12;
-					result.codepoint |= (cont_byte[0] & bitmask6) << 6;
-					result.codepoint |= cont_byte[1] & bitmask6;
+					result.codepoint = (byte & bitmask<u32>(3)) << 12;
+					result.codepoint |= (cont_byte[0] & bitmask<u32>(5)) << 6;
+					result.codepoint |= cont_byte[1] & bitmask<u32>(5);
 					result.advance = 3;
 				}
 			}
@@ -269,10 +259,10 @@ auto dk::utf8_decode(u8 const *str, u64 max) noexcept -> UnicodeDecode {
 				if (utf8_class[cont_byte[0] >> 3] == 0 &&
 					utf8_class[cont_byte[1] >> 3] == 0 &&
 					utf8_class[cont_byte[2] >> 3] == 0) {
-					result.codepoint = (byte & bitmask3) << 18;
-					result.codepoint |= ((cont_byte[0] & bitmask6) << 12);
-					result.codepoint |= ((cont_byte[1] & bitmask6) <<  6);
-					result.codepoint |=  (cont_byte[2] & bitmask6);
+					result.codepoint = (byte & bitmask<u32>(2)) << 18;
+					result.codepoint |= ((cont_byte[0] & bitmask<u32>(5)) << 12);
+					result.codepoint |= ((cont_byte[1] & bitmask<u32>(5)) <<  6);
+					result.codepoint |=  (cont_byte[2] & bitmask<u32>(5));
 					result.advance = 4;
 				}
 			}
@@ -296,28 +286,27 @@ auto dk::utf16_decode(u16 const *str, u64 max) noexcept -> UnicodeDecode {
 
 // https://github.com/EpicGamesExt/raddebugger/blob/master/src/base/base_strings.c#L1911
 auto dk::utf8_encode(u8 *out, u32 codepoint) noexcept -> u32 {
-	constexpr u32 bit8 = 0x80; // 1000 0000
 	u32 advance = 0;
 	if (codepoint <= 0x7F) {
 		out[0] = static_cast<u8>(codepoint);
 		advance = 1;
 	}
 	else if (codepoint <= 0x7FF) {
-		out[0] = (bitmask2 << 6) | ((codepoint >> 6) & bitmask5);
-		out[1] = bit8 | (codepoint & bitmask6);
+		out[0] = (bitmask<u32>(1) << 6) | ((codepoint >> 6) & bitmask<u32>(4));
+		out[1] = bit<u32>(7) | (codepoint & bitmask<u32>(5));
 		advance = 2;
 	}
 	else if (codepoint <= 0xFFFF) {
-		out[0] = (bitmask3 << 5) | ((codepoint >> 12) & bitmask4);
-		out[1] = bit8 | ((codepoint >> 6) & bitmask6);
-		out[2] = bit8 | ( codepoint       & bitmask6);
+		out[0] = (bitmask<u32>(2) << 5) | ((codepoint >> 12) & bitmask<u32>(3));
+		out[1] = bit<u32>(7) | ((codepoint >> 6) & bitmask<u32>(5));
+		out[2] = bit<u32>(7) | ( codepoint       & bitmask<u32>(5));
 		advance = 3;
 	}
 	else if (codepoint <= 0x10FFFF) {
-		out[0] = (bitmask4 << 4) | ((codepoint >> 18) & bitmask3);
-		out[1] = bit8 | ((codepoint >> 12) & bitmask6);
-		out[2] = bit8 | ((codepoint >>  6) & bitmask6);
-		out[3] = bit8 | ( codepoint        & bitmask6);
+		out[0] = (bitmask<u32>(3) << 4) | ((codepoint >> 18) & bitmask<u32>(2));
+		out[1] = bit<u32>(7) | ((codepoint >> 12) & bitmask<u32>(5));
+		out[2] = bit<u32>(7) | ((codepoint >>  6) & bitmask<u32>(5));
+		out[3] = bit<u32>(7) | ( codepoint        & bitmask<u32>(5));
 		advance = 4;
 	}
 	else {
@@ -339,7 +328,7 @@ auto dk::utf16_encode(u16 *out, u32 codepoint) noexcept -> u32 {
 	else {
 		u64 const v = codepoint - 0x10000;
 		out[0] = static_cast<u16>(0xD800 + (v >> 10));
-		out[1] = static_cast<u16>(0xDC00 + (v & bitmask10));
+		out[1] = static_cast<u16>(0xDC00 + (v & bitmask<u32>(9)));
 		advance = 2;
 	}
 	return advance;
